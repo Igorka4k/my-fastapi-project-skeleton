@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel
 from pydantic import PostgresDsn
 
@@ -12,7 +12,7 @@ class ApiPrefix(BaseModel):
     prefix: str = "/api"
 
 
-class DatabaseConfig(BaseSettings):
+class DatabaseConfig(BaseModel):
     url: PostgresDsn
     echo: bool = False
     echo_pool: bool = False
@@ -21,9 +21,15 @@ class DatabaseConfig(BaseSettings):
 
 
 class Settings(BaseSettings):  # BaseSettings задает основные настройки, ну также может там из файликов брать .env данные
+    model_config = SettingsConfigDict(
+        env_file=(".env.template", ".env"),
+        case_sensitive=False,
+        env_nested_delimiter="__",
+        env_prefix="APP_CONFIG__"
+    )
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
-    db: DatabaseConfig = DatabaseConfig()
+    db: DatabaseConfig
 
 
 settings = Settings()
