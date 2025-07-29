@@ -5,6 +5,8 @@ from core.config import settings
 from contextlib import asynccontextmanager
 from core.models import db_helper
 
+from fastapi.responses import ORJSONResponse  # ускорение сериализации и десериализации данных при парсинге json.
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -13,7 +15,7 @@ async def lifespan(app: FastAPI):
     # shutdown
     await db_helper.dispose()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(lifespan=lifespan, default_response_class=ORJSONResponse)
 app.include_router(api_router, prefix=settings.api.prefix)
 
 if __name__ == "__main__":
