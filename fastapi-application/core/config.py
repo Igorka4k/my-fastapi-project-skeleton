@@ -8,8 +8,15 @@ class RunConfig(BaseModel):  # BaseModel задает структуру дан�
     port: int = 8000
 
 
+class APiV1Prefix(BaseModel):
+    prefix: str = "/v1"
+    users: str = "/users"
+
+
+
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
+    v1: APiV1Prefix = APiV1Prefix()
 
 
 class DatabaseConfig(BaseModel):
