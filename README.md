@@ -1,4 +1,4 @@
-# Fastapi Found App
+# Fastapi Skeleton App
 
 Resources:
 
